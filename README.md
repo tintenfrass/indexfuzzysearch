@@ -1,5 +1,5 @@
 ## Fuzzy Search
 Ein kleines Tool, um die Index-Files von "https://github.com/tintenfrass/simplechurchbookindexes"
-einfach durchsuchen zu können.
+einfach durchsuchen zu können. Dabei wird eine Ähnlichkeitssuche verwendet.
 
-Dabei werden die Index-Files beim Programmstart direkt von Github eingelsen.
+Dabei werden die Index-Files beim Programmstart direkt von Github eingelesen.
