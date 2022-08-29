@@ -7,8 +7,9 @@ import (
 )
 
 type JsonConfig struct {
-	Year     map[string]int  `json:"zeitraum"`
-	Churches map[string]bool `json:"kirchen"`
+	Year          map[string]int  `json:"zeitraum"`
+	Churches      map[string]bool `json:"kirchen"`
+	InstantSearch bool            `json:"sofortsuche"`
 }
 
 const YearMin = 1550

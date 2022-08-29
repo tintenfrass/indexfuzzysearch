@@ -83,5 +83,9 @@ func replaceFlipped(input string) string {
 	for normal, special := range specialCases {
 		input = strings.Replace(input, special, normal, -1)
 	}
+	input = strings.Replace(input, "ÿ", "y", -1)
+	input = strings.Replace(input, "æ", "ae", -1)
+	input = strings.Replace(input, "ë", "e", -1)
+	input = strings.Replace(input, "ï", "i", -1)
 	return input
 }

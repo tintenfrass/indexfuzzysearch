@@ -27,8 +27,14 @@ func searchName(ih iup.Ihandle) int {
 	return iup.DEFAULT
 }
 
-func toogle(ih iup.Ihandle) int {
+func toogleChurches(ih iup.Ihandle) int {
 	config.Config.Churches[ih.GetAttribute("key")] = ih.GetAttribute("VALUE") == "ON"
+	config.Save()
+	return iup.DEFAULT
+}
+
+func toogleInstantSearch(ih iup.Ihandle) int {
+	config.Config.InstantSearch = ih.GetAttribute("VALUE") == "ON"
 	config.Save()
 	return iup.DEFAULT
 }
@@ -36,7 +42,7 @@ func toogle(ih iup.Ihandle) int {
 func selectAll(ih iup.Ihandle) int {
 	for _, box := range boxes {
 		box.SetAttribute("VALUE", "ON")
-		toogle(box)
+		toogleChurches(box)
 	}
 	return iup.DEFAULT
 }
@@ -44,7 +50,7 @@ func selectAll(ih iup.Ihandle) int {
 func selectNone(ih iup.Ihandle) int {
 	for _, box := range boxes {
 		box.SetAttribute("VALUE", "OFF")
-		toogle(box)
+		toogleChurches(box)
 	}
 	return iup.DEFAULT
 }
@@ -61,4 +67,11 @@ func valueChanged(ih iup.Ihandle) int {
 	}
 	config.Save()
 	return iup.DEFAULT
+}
+
+func searchInstant(ih iup.Ihandle) int {
+	if !config.Config.InstantSearch {
+		return iup.DEFAULT
+	}
+	return searchName(ih)
 }

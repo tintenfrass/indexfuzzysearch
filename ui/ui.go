@@ -19,6 +19,7 @@ func BuildAndRun() {
 	minLabel := iup.Label("").SetHandle("min").SetAttribute("TITLE", config.Config.Year["min"])
 	maxSlider := iup.Val("HORIZONTAL").SetAttribute("SIZE", "200x15").SetAttribute("TITLE", "max").SetAttribute("MIN", config.YearMin).SetAttribute("MAX", config.YearMax).SetAttribute("VALUE", config.Config.Year["max"])
 	maxLabel := iup.Label("").SetHandle("max").SetAttribute("TITLE", config.Config.Year["max"])
+	instantSearch := iup.Toggle("Suchen beim Tippen").SetAttribute("VALUE", getOnOffInstantSearch("instantSearch")).SetAttribute("key", "instantSearch")
 
 	//Buttons
 	exitButton := iup.Button("Exit").SetAttribute("SIZE", "50x15")
@@ -37,8 +38,8 @@ func BuildAndRun() {
 		iup.Label("Max:").SetAttribute("SIZE", "30x15"),
 		maxSlider,
 		maxLabel,
+		instantSearch.SetAttribute("SIZE", "x15"),
 	).SetAttribute("NUMDIV", 3)
-
 	//Map
 	boxes = map[string]iup.Ihandle{
 		"Lommatzsch":          iup.Toggle("Lommatzsch"),
@@ -78,7 +79,7 @@ func BuildAndRun() {
 	}
 
 	for key, box := range boxes {
-		box.SetAttribute("VALUE", getOnOff(key)).SetAttribute("key", key)
+		box.SetAttribute("VALUE", getOnOffChurches(key)).SetAttribute("key", key)
 		box.SetAttribute("TITLE", utf82ui(key)+"\r\n("+search.GetMinMax(key)+")")
 	}
 
@@ -211,13 +212,15 @@ func BuildAndRun() {
 	//Callbacks
 	iup.SetCallback(exitButton, "ACTION", iup.ActionFunc(exit))
 	iup.SetCallback(searchButton, "ACTION", iup.ActionFunc(searchName))
+	iup.SetCallback(searchField, "VALUECHANGED_CB", iup.ValueChangedFunc(searchInstant))
 	iup.SetCallback(selectAllButton, "ACTION", iup.ActionFunc(selectAll))
 	iup.SetCallback(selectNoneButton, "ACTION", iup.ActionFunc(selectNone))
 	for _, box := range boxes {
-		iup.SetCallback(box, "ACTION", iup.ActionFunc(toogle))
+		iup.SetCallback(box, "ACTION", iup.ActionFunc(toogleChurches))
 	}
 	iup.SetCallback(minSlider, "VALUECHANGED_CB", iup.ValueChangedFunc(valueChanged))
 	iup.SetCallback(maxSlider, "VALUECHANGED_CB", iup.ValueChangedFunc(valueChanged))
+	iup.SetCallback(instantSearch, "ACTION", iup.ActionFunc(toogleInstantSearch))
 
 	//Run
 	iup.Map(dlg)
@@ -225,8 +228,15 @@ func BuildAndRun() {
 	iup.MainLoop()
 }
 
-func getOnOff(key string) string {
+func getOnOffChurches(key string) string {
 	if config.Config.Churches[key] {
+		return "ON"
+	}
+	return "OFF"
+}
+
+func getOnOffInstantSearch(key string) string {
+	if config.Config.InstantSearch {
 		return "ON"
 	}
 	return "OFF"
