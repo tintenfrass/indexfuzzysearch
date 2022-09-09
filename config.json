@@ -41,5 +41,6 @@
   "Wilsdruff": true,
   "Zehren": true,
   "Ziegenhain": true
- }
+ },
+ "sofortsuche": false
 }
